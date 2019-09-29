@@ -1,0 +1,44 @@
+# If need be - updating:
+#   docker-compose down -v # Remove everything
+#   docker-compose pull    # Updates images
+#   docker-compose build --no-cache --pull --force-rm  # Rebuild local Dockerfile
+#   docker-compose up -d   # Start container
+
+version: '3.4'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-web
+    image: joplin-web:latest
+    container_name: joplin-web
+    # joplin-web backend must have access to locahost on which `joplin server start` listens
+    network_mode: host
+    environment:
+    volumes:
+      - /home/$_USER/.config/joplin-desktop/resources:/resources:ro
+    environment:
+      - JW_DEBUG=False
+      - JW_PAGINATOR=20
+      # PORT: to which joplin-vue connects to
+      - JW_HTTP_PORT=$JW_HTTP_PORT
+      - JOPLIN_WEBCLIPPER_TOKEN=$TOKEN
+      - JOPLIN_RESOURCES=/resources
+    user: $_UID:$_GID
+    #command: /bin/sh -c 'while true; do echo "Staying Alive!"; sleep 60; done'
+
+
+  vue:
+    build:
+      context: .
+      dockerfile: Dockerfile-vue
+    image: joplin-vue:latest
+    container_name: joplin-vue
+    # Only for testing, change for direct net link later
+    network_mode: host
+    environment:
+      - JW_HTTP_PORT=$JW_HTTP_PORT # As in joplin-web
+      - JV_HTTP_PORT=$JV_HTTP_PORT # Where joplin-vue will listen to
+      - JV_DISABLEHOSTCHECK=true # To allow serving Joplin Web to other hosts. Beware: accessible by anyone!
+    #command: /bin/sh -c 'while true; do echo "Staying Alive!"; sleep 60; done'
