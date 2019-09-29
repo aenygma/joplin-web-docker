@@ -27,3 +27,7 @@ Note: While Joplin (desktop) app automatically syncs the data with your cloud, t
 ```
 $ joplin --profile /home/$_USER/.config/joplin-desktop sync
 ```
+
+## To do
+
+* This ![thread](https://discourse.joplinapp.org/t/joplin-web-web-application-companion-for-joplin/555/23) shows that links `![foo](:xxxxxxx)` to local resources (images, attachments, etc.) get converted to `![foo](http://127.0.0.1:8001/static/xxxxxxxxx)`. However, that does not work for me yet.
