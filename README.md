@@ -36,8 +36,7 @@ This ![thread](https://discourse.joplinapp.org/t/joplin-web-web-application-comp
 
 However, that does not work for me yet.
 
-The source code shows the path should change to `![foo](http://
-127.0.0.1:8001/files/xxxxxxxx)`.
+The source code shows the path should change to `![foo](http://127.0.0.1:8001/files/xxxxxxxx)`.
 
 Also, there is an extension missing (`xxxxxxx.png`).
 
