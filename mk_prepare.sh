@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Set username of user who runs joplin app with Web Clipper on localhost
-export _USER=mu
+export _USER=username
 
 # Set port numbers
 export JW_HTTP_PORT=8001 # Where the joplin-web backend listens
