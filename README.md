@@ -1,43 +1,24 @@
 # Dockerizing the development version of joplin-web
 
+Features:
+* [Joplin Web](https://github.com/foxmask/joplin-web) - development version!.
+* [Joplin terminal](https://github.com/laurent22/joplin) application:
+  * running Web Clipper service (`joplin server start`);
+  * syncing notes with cloud once a minute.
+
 ## Installation
 
 Download content of this repository to your /path/of/choice.
 
-* Edit `mk_prepare.sh` and/or `docker-compose.yml` as you wish - pay
-attention to `_USER`, `JW_HTTP_PORT`, `JV_HTTP_PORT`, `JV_DISABLEHOSTCHECK`.
+* Edit `docker-compose.yml` as you wish - pay
+attention to:
+  * `User`: UID and GID (numbers!) of the user, who owns the Joplin profile as defined in `Volumes`.
+  * `Volumes`: the first parameter is path to existing Joplin Desktop profile. (Copy it from your computer where you use Joplin Desktop App with Web Clipper Option enabled.)
+* Run the script `mk_prepare.sh` to get docker image built.
+* Run `docker-compose up -d` to start the container.
 
-* Start Joplin with Web Clipper server (as $_USER, not root).
-
-  * If you work on a desktop, simply run `joplin`.
-  * If you are setting things up on a head-less server, copy `.config/joplin-desktop` folder from your desktop to your server and run Joplin in terminal mode on the server:
-```
-$ joplin --profile /home/$_USER/.config/joplin-desktop server start
-2019-09-29 15:24:12: "Starting Clipper server on port 41184"
-```
-
-* Run the script `mk_prepare.sh` to get docker containers up and running.
-
-
-If all went well, point your web browser to `http://localhost:$JV_HTTP_PORT/` and
-you should see your Joplin notes.
-
-Note: While Joplin (desktop) app automatically syncs the data with your cloud, the terminal version does not - to actually sync any changes, run regularly:
-
-```
-$ joplin --profile /home/$_USER/.config/joplin-desktop sync
-```
+If all went well, point your web browser to `http://localhost:8001/` and you should see your Joplin notes.
 
 ## To do
 
-### Internal links to resources
-
-This ![thread](https://discourse.joplinapp.org/t/joplin-web-web-application-companion-for-joplin/555/23) shows that links `![foo](:xxxxxxx)` to local resources (images, attachments, etc.) get converted to `![foo](http://127.0.0.1:8001/static/xxxxxxxxx)`.
-
-However, that does not work for me yet.
-
-The source code shows the path should change to `![foo](http://127.0.0.1:8001/files/xxxxxxxx)`.
-
-Also, there is an extension missing (`xxxxxxx.png`).
-
-And why just localhost (and not FQDN).
+* Comment on setting up a web proxy with SSL and authentication to access http://localhost:8001 from remote computers.

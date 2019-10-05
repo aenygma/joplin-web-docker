@@ -1,6 +1,0 @@
-FROM node:10-alpine
-WORKDIR  /
-COPY joplin-web-master/joplin-vue /app/joplin-vue/
-COPY joplin-web-master/joplin_web /app/joplin_web/
-COPY joplin-vue.sh                /app/joplin-vue.sh
-CMD ["sh", "-c", "/app/joplin-vue-start.sh"]

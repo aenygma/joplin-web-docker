@@ -8,37 +8,21 @@ version: '3.4'
 
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile-web
+    build: .
     image: joplin-web:latest
     container_name: joplin-web
-    # joplin-web backend must have access to locahost on which `joplin server start` listens
-    network_mode: host
-    environment:
+    ports:
+      # Point your browser to http://localhost:8001 to access Joplin Web
+      - 127.0.0.1:8001:8001
     volumes:
-      - /home/$_USER/.config/joplin-desktop/resources:/resources:ro
+      # The first parameter is existing path to a copy of Joplin Desktop profile
+      - /var/lib/docker-vol/joplin_profile:/joplin-desktop
     environment:
       - JW_DEBUG=False
       - JW_PAGINATOR=20
-      # PORT: to which joplin-vue connects to
-      - JW_HTTP_PORT=$JW_HTTP_PORT
-      - JOPLIN_WEBCLIPPER_TOKEN=$TOKEN
-      - JOPLIN_RESOURCES=/resources
-    user: $_UID:$_GID
-    #command: /bin/sh -c 'while true; do echo "Staying Alive!"; sleep 60; done'
-
-
-  vue:
-    build:
-      context: .
-      dockerfile: Dockerfile-vue
-    image: joplin-vue:latest
-    container_name: joplin-vue
-    # Only for testing, change for direct net link later
-    network_mode: host
-    environment:
-      - JW_HTTP_PORT=$JW_HTTP_PORT # As in joplin-web
-      - JV_HTTP_PORT=$JV_HTTP_PORT # Where joplin-vue will listen to
-      - JV_DISABLEHOSTCHECK=true # To allow serving Joplin Web to other hosts. Beware: accessible by anyone!
+      #- JW_HTTP_PORT=8001 # Not needed thanks to port mapping above
+      # See Joplin Desktop App:
+      # // Tools // Web clipper options: Authorization token
+      - JOPLIN_WEBCLIPPER_TOKEN=0b1c579cb0bxf0d35b3ef799f6065f5706fe9b4de60781368a7070c64d55e0dec2ccc4566c36768f7203cd0ed5b39b9f13828f0f2bff1faa327637a4eee75c90
+      - JOPLIN_RESOURCES=/joplin-desktop/resources
     #command: /bin/sh -c 'while true; do echo "Staying Alive!"; sleep 60; done'
